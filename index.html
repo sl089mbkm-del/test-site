@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Путешествия во сне — вебинар об осознанных сновидениях</title>
+<meta name="description" content="Онлайн-вебинар «Путешествия во сне»: научитесь управлять сновидениями — летать, встречать знакомых и находить ответы прямо во сне. 28 ноября, 19:00 по Москве.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Prata&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --night:#14122B;
+    --deep:#1B1840;
+    --ink:#0D0B1F;
+    --moon:#F3ECDC;
+    --dim:rgba(243,236,220,.62);
+    --faint:rgba(243,236,220,.38);
+    --amber:#E8A94E;
+    --amber-soft:rgba(232,169,78,.16);
+    --lav:#A78BDB;
+    --line:rgba(243,236,220,.14);
+    --serif:'Prata', Georgia, serif;
+    --sans:'Manrope', system-ui, sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--night);
+    color:var(--moon);
+    font-family:var(--sans);
+    font-size:17px;
+    line-height:1.65;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--amber);color:var(--ink)}
+
+  /* ---------- небо: звёзды и туман ---------- */
+  #stars{position:fixed;inset:0;z-index:0;pointer-events:none}
+  .fog{position:fixed;inset:-20%;z-index:0;pointer-events:none;
+    background:
+      radial-gradient(ellipse 55% 38% at 22% 28%, rgba(167,139,219,.10), transparent 70%),
+      radial-gradient(ellipse 48% 34% at 80% 68%, rgba(232,169,78,.07), transparent 70%);
+    animation:fogdrift 46s ease-in-out infinite alternate;
+  }
+  .fog.f2{
+    background:
+      radial-gradient(ellipse 60% 40% at 70% 18%, rgba(120,110,200,.09), transparent 70%),
+      radial-gradient(ellipse 50% 36% at 15% 80%, rgba(232,169,78,.05), transparent 70%);
+    animation-duration:64s;animation-direction:alternate-reverse;
+  }
+  @keyframes fogdrift{
+    from{transform:translate3d(-2.5%,-1.5%,0) scale(1)}
+    to{transform:translate3d(2.5%,2%,0) scale(1.06)}
+  }
+
+  .wrap{position:relative;z-index:1;max-width:1060px;margin:0 auto;padding:0 28px}
+
+  /* ---------- шапка ---------- */
+  header{
+    display:flex;flex-direction:column;align-items:flex-start;gap:18px;
+    padding:36px 0;
+  }
+  .logo{
+    font-family:var(--serif);font-size:clamp(36px,5.8vw,84px);
+    letter-spacing:.01em;text-decoration:none;color:var(--moon);
+    line-height:1.1;white-space:nowrap;
+  }
+  .logo span{color:var(--amber)}
+  nav a{
+    color:var(--dim);text-decoration:none;font-size:15px;margin-right:28px;
+    border-bottom:1px solid transparent;transition:color .25s,border-color .25s;
+  }
+  nav a:hover{color:var(--moon);border-bottom-color:var(--amber)}
+  nav a:focus-visible{outline:2px solid var(--amber);outline-offset:3px;border-radius:2px}
+
+  /* ---------- герой ---------- */
+  .hero{
+    min-height:calc(100vh - 96px);
+    display:grid;grid-template-columns:1.25fr .75fr;gap:48px;align-items:center;
+    padding:32px 0 80px;
+  }
+  .kicker{
+    font-size:15px;color:var(--dim);margin-bottom:26px;
+    display:flex;align-items:center;gap:12px;
+  }
+  .kicker::before{content:"";width:34px;height:1px;background:var(--amber);flex:none}
+  h1{
+    font-family:var(--serif);font-weight:400;
+    font-size:48px;line-height:1.12;letter-spacing:.005em;
+    margin-bottom:28px;
+  }
+  .lede{font-size:19px;color:var(--dim);max-width:34em;margin-bottom:40px}
+  .lede b{color:var(--moon);font-weight:600}
+  .when{
+    display:inline-flex;flex-wrap:wrap;gap:10px 26px;
+    font-size:15px;color:var(--dim);
+    border:1px solid var(--line);border-radius:100px;padding:12px 24px;margin-bottom:40px;
+  }
+  .when strong{color:var(--amber);font-weight:600}
+  .actions{display:flex;flex-wrap:wrap;gap:16px;align-items:center}
+  .btn{
+    display:inline-block;font-family:var(--sans);font-weight:600;font-size:16px;
+    padding:16px 34px;border-radius:100px;text-decoration:none;cursor:pointer;
+    border:1px solid transparent;transition:transform .25s,box-shadow .25s,background .25s,color .25s,border-color .25s;
+  }
+  .btn-primary{background:var(--amber);color:var(--ink)}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 34px rgba(232,169,78,.28)}
+  .btn-ghost{color:var(--moon);border-color:var(--line)}
+  .btn-ghost:hover{border-color:var(--amber);color:var(--amber)}
+  .btn:focus-visible{outline:2px solid var(--moon);outline-offset:3px}
+
+  /* дыхание луны */
+  .breath{display:flex;flex-direction:column;align-items:center;gap:22px;justify-self:center}
+  .orb{
+    width:200px;height:200px;border-radius:50%;position:relative;
+    background:radial-gradient(circle at 38% 34%, #F7EFDD 0%, #E9D9B4 42%, #C9A96B 100%);
+    box-shadow:0 0 70px 12px rgba(232,169,78,.30), 0 0 160px 40px rgba(232,169,78,.12);
+    animation:breath 9s ease-in-out infinite;
+  }
+  .orb::after{
+    content:"";position:absolute;inset:-34px;border-radius:50%;
+    border:1px solid rgba(243,236,220,.16);
+    animation:breath 9s ease-in-out infinite;
+  }
+  @keyframes breath{
+    0%,100%{transform:scale(.88);box-shadow:0 0 50px 8px rgba(232,169,78,.22), 0 0 120px 30px rgba(232,169,78,.08)}
+    50%{transform:scale(1);box-shadow:0 0 90px 18px rgba(232,169,78,.38), 0 0 200px 55px rgba(232,169,78,.15)}
+  }
+  .breath p{font-size:14px;color:var(--faint);max-width:16em;text-align:center}
+
+  /* таймер */
+  .timer{margin-top:6px;text-align:center}
+  .timer .cap{font-size:13px;color:var(--faint);margin-bottom:12px}
+  .timer .row{display:flex;gap:18px;justify-content:center}
+  .timer .cell{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:44px}
+  .timer .num{
+    font-family:var(--sans);font-weight:700;font-size:32px;line-height:1;color:var(--moon);
+    font-variant-numeric:tabular-nums;
+  }
+  .timer .lab{font-size:11.5px;color:var(--faint)}
+  .timer .sep{font-weight:700;font-size:26px;color:var(--amber);align-self:flex-start;margin-top:1px}
+  .timer.live .sep{animation:sepblink 1s steps(2,start) infinite}
+  @keyframes sepblink{50%{opacity:.25}}
+  .timer .past{font-size:16px;color:var(--amber)}
+
+  /* ---------- секции ---------- */
+  section{padding:96px 0}
+  .sec-title{
+    font-family:var(--serif);font-weight:400;font-size:clamp(30px,4.4vw,46px);
+    line-height:1.15;margin-bottom:14px;
+  }
+  .sec-sub{color:var(--dim);max-width:36em;margin-bottom:56px}
+  .rule{width:56px;height:1px;background:var(--amber);margin-bottom:30px}
+
+  /* программа — фазы луны */
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+  .step{
+    background:var(--deep);border:1px solid var(--line);border-radius:20px;
+    padding:34px 30px;transition:transform .3s,border-color .3s;
+  }
+  .step:hover{transform:translateY(-4px);border-color:rgba(232,169,78,.45)}
+  .step svg{display:block;margin-bottom:24px}
+  .step h3{font-family:var(--serif);font-weight:400;font-size:22px;margin-bottom:12px}
+  .step p{color:var(--dim);font-size:15.5px}
+  .step .dur{display:inline-block;margin-top:18px;font-size:13.5px;color:var(--amber)}
+
+  /* спикер */
+  .speaker{display:grid;grid-template-columns:.85fr 1.15fr;gap:64px;align-items:center}
+  .speaker figure{
+    border-radius:180px 180px 20px 20px;overflow:hidden;border:1px solid var(--line);
+    box-shadow:0 30px 80px rgba(0,0,0,.45);
+  }
+  .speaker img{display:block;width:100%;height:auto}
+  .speaker h3{font-family:var(--serif);font-weight:400;font-size:clamp(26px,3.4vw,36px);margin-bottom:6px}
+  .speaker .role{color:var(--amber);font-size:15px;margin-bottom:24px}
+  .speaker p{color:var(--dim);margin-bottom:16px;max-width:34em}
+  .facts{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+  .fact{
+    font-size:14px;color:var(--moon);border:1px solid var(--line);border-radius:100px;
+    padding:9px 18px;background:rgba(27,24,64,.55);
+  }
+
+  /* для кого */
+  .who{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+  .who div{border-top:1px solid var(--line);padding-top:24px}
+  .who p{font-size:17px;color:var(--dim)}
+  .who p b{display:block;color:var(--moon);font-weight:600;font-size:18px;margin-bottom:8px}
+
+  /* регистрация */
+  .register{
+    background:linear-gradient(180deg, var(--deep), #171436);
+    border:1px solid var(--line);border-radius:28px;
+    padding:64px 56px;text-align:center;
+  }
+  .register .sec-sub{margin:0 auto 40px}
+  form{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;max-width:640px;margin:0 auto}
+  input{
+    flex:1 1 220px;font-family:var(--sans);font-size:16px;color:var(--moon);
+    background:rgba(13,11,31,.6);border:1px solid var(--line);border-radius:100px;
+    padding:16px 26px;transition:border-color .25s;
+  }
+  input::placeholder{color:var(--faint)}
+  input:focus{outline:none;border-color:var(--amber)}
+  input:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+  .form-note{width:100%;font-size:13.5px;color:var(--faint);margin-top:6px}
+  .done{display:none;padding:28px 0 6px}
+  .done h3{font-family:var(--serif);font-weight:400;font-size:26px;margin-bottom:10px;color:var(--amber)}
+  .done p{color:var(--dim)}
+  form.sent{display:none}
+  form.sent + .done{display:block}
+
+  footer{
+    border-top:1px solid var(--line);margin-top:60px;
+    padding:40px 0 48px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;
+    color:var(--faint);font-size:14px;
+  }
+  footer em{font-style:normal;color:var(--dim)}
+
+  @media (max-width:860px){
+    .hero{grid-template-columns:1fr;min-height:auto;padding-bottom:56px}
+    .breath{order:-1;margin-top:8px}
+    .orb{width:140px;height:140px}
+    .speaker{grid-template-columns:1fr;gap:36px}
+    .speaker figure{max-width:340px;margin:0 auto}
+    .steps,.who{grid-template-columns:1fr}
+    .register{padding:48px 26px}
+    nav a{margin-left:18px}
+  }
+  @media (max-width:560px){
+    .logo{font-size:min(8vw,32px)}
+    nav a{margin-right:18px;font-size:14px}
+    section{padding:72px 0}
+  }
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    .fog,.orb,.orb::after,.timer .sep{animation:none}
+  }
+</style>
+</head>
+<body>
+
+<canvas id="stars" aria-hidden="true"></canvas>
+<div class="fog" aria-hidden="true"></div>
+<div class="fog f2" aria-hidden="true"></div>
+
+<div class="wrap">
+
+  <header>
+    <a class="logo" href="#top">Путешествия <span>во сне</span></a>
+    <nav>
+      <a href="#program">Программа</a>
+      <a href="#speaker">Спикер</a>
+      <a href="#register">Записаться</a>
+    </nav>
+  </header>
+
+  <!-- герой -->
+  <div class="hero" id="top">
+    <div>
+      <p class="kicker">Онлайн-вебинар · 90 минут · практика в прямом эфире</p>
+      <h1>Ночь — это <br>ещё одна жизнь</h1>
+      <p class="lede">Научитесь осознанным сновидениям: <b>летать над знакомыми городами</b>, встречать людей, которых давно не видели, и находить ответы на вопросы — прямо во сне.</p>
+      <div class="when">
+        <span><strong>28 ноября</strong>, 19:00 по Москве</span>
+        <span>Онлайн, из любой точки мира</span>
+      </div>
+      <div class="actions">
+        <a class="btn btn-primary" href="#register">Занять место</a>
+        <a class="btn btn-ghost" href="#program">Смотреть программу</a>
+      </div>
+    </div>
+    <div class="breath" aria-hidden="true">
+      <div class="orb"></div>
+      <p>дышите медленно, в такт луне — примерно так начинается сон</p>
+      <div class="timer" id="timer">
+        <p class="cap">до начала осталось</p>
+        <div class="row">
+          <div class="cell"><span class="num" id="t-d">--</span><span class="lab">дней</span></div>
+          <span class="sep">:</span>
+          <div class="cell"><span class="num" id="t-h">--</span><span class="lab">часов</span></div>
+          <span class="sep">:</span>
+          <div class="cell"><span class="num" id="t-m">--</span><span class="lab">минут</span></div>
+          <span class="sep">:</span>
+          <div class="cell"><span class="num" id="t-s">--</span><span class="lab">секунд</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- программа -->
+  <section id="program">
+    <div class="rule"></div>
+    <h2 class="sec-title">Что будет на вебинаре</h2>
+    <p class="sec-sub">Три части — как три фазы ночи. От науки о сне до первой осознанной практики, которую вы сделаете в тот же вечер.</p>
+    <div class="steps">
+      <div class="step">
+        <svg width="44" height="44" viewBox="0 0 44 44" fill="none" aria-hidden="true">
+          <circle cx="22" cy="22" r="20" stroke="#F3ECDC" stroke-opacity=".35" stroke-width="1.5"/>
+        </svg>
+        <h3>Как устроен сон</h3>
+        <p>Фазы сна и REM, почему сны забываются к утру и что происходит с мозгом, пока вы «выключены». Без мистики — только исследования.</p>
+        <span class="dur">30 минут</span>
+      </div>
+      <div class="step">
+        <svg width="44" height="44" viewBox="0 0 44 44" fill="none" aria-hidden="true">
+          <circle cx="22" cy="22" r="20" stroke="#F3ECDC" stroke-opacity=".35" stroke-width="1.5"/>
+          <path d="M22 2 A20 20 0 0 1 22 42 Z" fill="#A78BDB" fill-opacity=".55"/>
+        </svg>
+        <h3>Техники осознания</h3>
+        <p>Проверки реальности, которые работают, метод MILD для новичков и дневник снов, который запускает первые осознанные сны за неделю.</p>
+        <span class="dur">35 минут</span>
+      </div>
+      <div class="step">
+        <svg width="44" height="44" viewBox="0 0 44 44" fill="none" aria-hidden="true">
+          <circle cx="22" cy="22" r="20" fill="#E8A94E"/>
+          <circle cx="15" cy="17" r="3.4" fill="#D69A44"/>
+          <circle cx="27" cy="28" r="2.4" fill="#D69A44"/>
+        </svg>
+        <h3>Первая практика</h3>
+        <p>Разбираем ваши сны из чата в прямом эфире и проводим живое упражнение на закрепление — навык останется с вами навсегда.</p>
+        <span class="dur">25 минут + ответы на вопросы</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- спикер -->
+  <section id="speaker">
+    <div class="speaker">
+      <figure>
+        <img src="assets/speaker.png" alt="Портрет Алины Ветровой в глубоком индиго-небе со звёздами и янтарным фонарём">
+      </figure>
+      <div>
+        <div class="rule"></div>
+        <h3>Алина Ветрова</h3>
+        <p class="role">Психолог, исследователь осознанных сновидений</p>
+        <p>Двенадцать лет Алина изучает сны и учит людей видеть их осознанно — от студентов до хирургов, которые тренируют сложные операции во сне.</p>
+        <p>Автор практикума «Ночной дневник» и ведущая закрытого клуба сновидцев, где уже более 4 000 человек увидели свой первый осознанный сон.</p>
+        <div class="facts">
+          <span class="fact">12 лет практики</span>
+          <span class="fact">4 000+ первых осознанных снов у учеников</span>
+          <span class="fact">Лекции о сне в 11 городах</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- для кого -->
+  <section id="who">
+    <div class="rule"></div>
+    <h2 class="sec-title">Этот вебинар — для вас, если вы…</h2>
+    <p class="sec-sub"></p>
+    <div class="who">
+      <div><p><b>Хотите перестать бояться кошмаров</b>Осознанность во сне превращает ночной страх в сюжет, которым вы управляете.</p></div>
+      <div><p><b>Любите путешествия — даже вымышленные</b>Полёт над ночным городом в осознанном сне по яркости сравним с настоящим.</p></div>
+      <div><p><b>Ищете ответы на вопросы</b>Во сне мозг свободно соединяет идеи, которые днём кажутся далёкими.</p></div>
+    </div>
+  </section>
+
+  <!-- регистрация -->
+  <section id="register">
+    <div class="register">
+      <h2 class="sec-title">Записаться на вебинар</h2>
+      <p class="sec-sub">Участие бесплатное. Ссылку на трансляцию пришлём за час до начала, а после — запись и памятка по техникам.</p>
+      <form id="regform" novalidate>
+        <input type="text" name="name" placeholder="Ваше имя" autocomplete="name" required>
+        <input type="email" name="email" placeholder="Электронная почта" autocomplete="email" required>
+        <button class="btn btn-primary" type="submit">Записаться бесплатно</button>
+        <p class="form-note">Нажимая кнопку, вы соглашаетесь получить одно письмо со ссылкой на трансляцию. Никакой рассылки.</p>
+      </form>
+      <div class="done" id="regdone" role="status">
+        <h3>Вы в списке</h3>
+        <p>Загляните в почту за час до начала — там будет ссылка на трансляцию. До встречи во сне.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>«Путешествия во сне» — вебинар об осознанных сновидениях</span>
+    <em>До встречи в REM-фазе</em>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* звёздное небо */
+  var canvas = document.getElementById('stars');
+  var ctx = canvas.getContext('2d');
+  var stars = [], meteors = [], W, H;
+
+  function resize(){
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+    stars = [];
+    var count = Math.min(220, Math.floor(W * H / 9000));
+    for (var i = 0; i < count; i++){
+      stars.push({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        r: Math.random() * 1.3 + .3,
+        a: Math.random() * .5 + .25,
+        p: Math.random() * Math.PI * 2,
+        s: Math.random() * .015 + .004
+      });
+    }
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  var nextMeteor = performance.now() + 3500;
+  function tick(now){
+    ctx.clearRect(0, 0, W, H);
+    for (var i = 0; i < stars.length; i++){
+      var st = stars[i];
+      if (!reduce) st.p += st.s;
+      var tw = reduce ? st.a : st.a * (.6 + .4 * Math.sin(st.p));
+      ctx.beginPath();
+      ctx.arc(st.x, st.y, st.r, 0, 6.2832);
+      ctx.fillStyle = 'rgba(243,236,220,' + tw.toFixed(3) + ')';
+      ctx.fill();
+    }
+    if (!reduce){
+      if (now > nextMeteor){
+        meteors.push({
+          x: Math.random() * W * .7 + W * .15,
+          y: Math.random() * H * .3,
+          vx: -(4 + Math.random() * 4),
+          vy: 2.4 + Math.random() * 2,
+          life: 1
+        });
+        nextMeteor = now + 4000 + Math.random() * 7000;
+      }
+      for (var m = meteors.length - 1; m >= 0; m--){
+        var mt = meteors[m];
+        mt.x += mt.vx; mt.y += mt.vy; mt.life -= .016;
+        if (mt.life <= 0){ meteors.splice(m, 1); continue; }
+        var grad = ctx.createLinearGradient(mt.x, mt.y, mt.x - mt.vx * 12, mt.y - mt.vy * 12);
+        grad.addColorStop(0, 'rgba(243,236,220,' + (mt.life * .8).toFixed(3) + ')');
+        grad.addColorStop(1, 'rgba(243,236,220,0)');
+        ctx.strokeStyle = grad;
+        ctx.lineWidth = 1.4;
+        ctx.beginPath();
+        ctx.moveTo(mt.x, mt.y);
+        ctx.lineTo(mt.x - mt.vx * 12, mt.y - mt.vy * 12);
+        ctx.stroke();
+      }
+      requestAnimationFrame(tick);
+    }
+  }
+  requestAnimationFrame(tick);
+
+  /* таймер до начала: 28 ноября 2026, 19:00 по Москве */
+  var target = new Date('2026-11-28T19:00:00+03:00').getTime();
+  var tEl = {
+    root: document.getElementById('timer'),
+    d: document.getElementById('t-d'), h: document.getElementById('t-h'),
+    m: document.getElementById('t-m'), s: document.getElementById('t-s')
+  };
+  function plural(n, one, few, many){
+    var m = Math.abs(n) % 100, d = m % 10;
+    if (m > 10 && m < 20) return many;
+    if (d > 1 && d < 5) return few;
+    if (d === 1) return one;
+    return many;
+  }
+  function pad(n){ return (n < 10 ? '0' : '') + n; }
+  function tickTimer(){
+    var left = target - Date.now();
+    if (left <= 0){
+      tEl.root.classList.remove('live');
+      tEl.root.innerHTML = '<p class="past">вебинар уже начался — запись будет в вашей почте</p>';
+      clearInterval(timerId);
+      return;
+    }
+    var sec = Math.floor(left / 1000);
+    var d = Math.floor(sec / 86400); sec -= d * 86400;
+    var h = Math.floor(sec / 3600); sec -= h * 3600;
+    var m = Math.floor(sec / 60); sec -= m * 60;
+    tEl.d.textContent = d;
+    tEl.h.textContent = pad(h);
+    tEl.m.textContent = pad(m);
+    tEl.s.textContent = pad(sec);
+    var labs = tEl.root.querySelectorAll('.lab');
+    labs[0].textContent = plural(d, 'день', 'дня', 'дней');
+    labs[1].textContent = plural(h, 'час', 'часа', 'часов');
+    labs[2].textContent = plural(m, 'минута', 'минуты', 'минут');
+    labs[3].textContent = plural(sec, 'секунда', 'секунды', 'секунд');
+    tEl.root.classList.add('live');
+  }
+  tickTimer();
+  var timerId = setInterval(tickTimer, 1000);
+
+  /* форма регистрации */
+  var form = document.getElementById('regform');
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var name = form.name.value.trim();
+    var email = form.email.value.trim();
+    if (!name){ form.name.focus(); form.name.style.borderColor = '#E8A94E'; return; }
+    if (!email || email.indexOf('@') < 0){ form.email.focus(); form.email.style.borderColor = '#E8A94E'; return; }
+    form.classList.add('sent');
+    document.getElementById('regdone').scrollIntoView({behavior: reduce ? 'auto' : 'smooth', block: 'center'});
+  });
+})();
+</script>
+</body>
+</html>
