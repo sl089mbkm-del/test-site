@@ -5,9 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Путешествия во сне — вебинар об осознанных сновидениях</title>
 <meta name="description" content="Онлайн-вебинар «Путешествия во сне»: научитесь управлять сновидениями — летать, встречать знакомых и находить ответы прямо во сне. 28 ноября, 19:00 по Москве.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Prata&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.web3forms.com; object-src 'none'; base-uri 'self'; form-action 'none'">
+<link rel="stylesheet" href="assets/fonts/fonts.css">
 <style>
   :root{
     --night:#14122B;
@@ -328,7 +327,7 @@
   <section id="speaker">
     <div class="speaker">
       <figure>
-        <img src="assets/speaker.png" alt="Портрет Алины Ветровой в глубоком индиго-небе со звёздами и янтарным фонарём">
+        <img src="assets/speaker.webp" width="900" height="1350" alt="Портрет Алины Ветровой в глубоком индиго-небе со звёздами и янтарным фонарём">
       </figure>
       <div>
         <div class="rule"></div>
@@ -493,16 +492,41 @@
   tickTimer();
   var timerId = setInterval(tickTimer, 1000);
 
-  /* форма регистрации */
+  /* форма регистрации.
+     Демо-режим: FORM_ENDPOINT пуст — заявка никуда не уходит, показывается экран успеха.
+     Реальный приём заявок: бесплатный ключ на https://web3forms.com (до 250 заявок/мес),
+     вставьте адрес вида 'https://api.web3forms.com/submit' в FORM_ENDPOINT ниже. */
+  var FORM_ENDPOINT = '';
   var form = document.getElementById('regform');
+  var formNote = form.querySelector('.form-note');
+  var submitBtn = form.querySelector('button[type="submit"]');
+  function showDone(){
+    form.classList.add('sent');
+    document.getElementById('regdone').scrollIntoView({behavior: reduce ? 'auto' : 'smooth', block: 'center'});
+  }
   form.addEventListener('submit', function(e){
     e.preventDefault();
     var name = form.name.value.trim();
     var email = form.email.value.trim();
     if (!name){ form.name.focus(); form.name.style.borderColor = '#E8A94E'; return; }
-    if (!email || email.indexOf('@') < 0){ form.email.focus(); form.email.style.borderColor = '#E8A94E'; return; }
-    form.classList.add('sent');
-    document.getElementById('regdone').scrollIntoView({behavior: reduce ? 'auto' : 'smooth', block: 'center'});
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ form.email.focus(); form.email.style.borderColor = '#E8A94E'; return; }
+    if (!FORM_ENDPOINT){ showDone(); return; }
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Отправляем…';
+    fetch(FORM_ENDPOINT, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+      body: JSON.stringify({name: name, email: email, subject: 'Регистрация на вебинар «Путешествия во сне»'})
+    }).then(function(r){
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      showDone();
+    }).catch(function(){
+      formNote.textContent = 'Не получилось отправить — проверьте связь и попробуйте ещё раз.';
+      formNote.style.color = '#E8A94E';
+    }).finally(function(){
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Записаться бесплатно';
+    });
   });
 })();
 </script>
