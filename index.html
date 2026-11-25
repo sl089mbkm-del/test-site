@@ -84,10 +84,15 @@
     display:flex;align-items:center;gap:12px;
   }
   .kicker::before{content:"";width:34px;height:1px;background:var(--amber);flex:none}
+  @keyframes nightday{
+    0%,100%{color:#F3ECDC}
+    50%{color:#000000}
+  }
   h1{
     font-family:var(--serif);font-weight:400;
     font-size:48px;line-height:1.12;letter-spacing:.005em;
     margin-bottom:28px;
+    animation:nightday 20s ease-in-out infinite;
   }
   .lede{font-size:19px;color:var(--dim);max-width:34em;margin-bottom:40px}
   .lede b{color:var(--moon);font-weight:600}
@@ -233,7 +238,7 @@
   }
   @media (prefers-reduced-motion:reduce){
     html{scroll-behavior:auto}
-    .fog,.orb,.orb::after,.timer .sep{animation:none}
+    .fog,.orb,.orb::after,.timer .sep,h1{animation:none}
   }
 </style>
 </head>
